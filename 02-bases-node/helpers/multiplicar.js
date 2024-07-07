@@ -1,10 +1,7 @@
 const fs = require('fs'); //Se trae el sistema de archivos de windows
 
-const crearArchivo = async( base = 5 ) => {
+const crearArchivo = async( base = 5, listar = false ) => {
     try {
-        console.log('=====================');
-        console.log(`    Tabla del ${ base }`);
-        console.log('=====================');
     
         let salida = '';
     
@@ -12,7 +9,12 @@ const crearArchivo = async( base = 5 ) => {
             salida += `${ base } x ${i} = ${ base * i }\n`;
         }
     
-        console.log(salida)
+        if(listar){ 
+            console.log('=====================');
+            console.log(`    Tabla del ${ base }`);
+            console.log('=====================');
+            console.log(salida);
+        }
     
         //Esto permite crear archivos, el primer argumento espera un path, si no lo tiene va a utilizar la carpeta raíz para crear el archivo, el segundo argumento 'tabla-5.txt' 
         //va a ser el nombre del archivo, el tercer argumento es la información a grabar y el cuarto el callback 
