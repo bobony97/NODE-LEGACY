@@ -5,13 +5,20 @@ const app = express();
 app.use(express.static('public'));
 
 
-app.get('/', (req, res) =>{
-    res.send('Home');
-});
+// app.get('/', (req, res) =>{
+//     res.send('Home');
+// });
 
-app.get('/hola', (req, res) =>{
-    res.send('Hola Mundo');
-});
+// app.get('/hola', (req, res) =>{
+//     res.send('Hola Mundo');
+// });
+
+app.get('/generic', (req, res) => {
+    res.sendFile(__dirname + '/public/generic.html');
+})
+app.get('/elements', (req, res) => {
+    res.sendFile(__dirname + '/public/elements.html');
+})
 
 //Redirecciona al usuario a otro archivo cuando se ingresa una ruta que no este dentro de la aplicacion
 app.get('*', (req, res) =>{
