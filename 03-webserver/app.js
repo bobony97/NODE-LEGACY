@@ -18,8 +18,11 @@ app.use(express.static('public'));
 
 
 app.get('/', (req, res) => {
-    res.render('home');
-})
+    res.render('home', {
+        nombre: 'Fernando Perez',
+        titulo: 'Curso de node'
+    });
+});
 app.get('/generic', (req, res) => {
     res.sendFile(__dirname + '/public/generic.html');
 })
