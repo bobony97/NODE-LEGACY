@@ -1,7 +1,8 @@
 const express = require('express');
 const app = express();
 const hbs = require('hbs');
-const path = require('path');
+require('dotenv').config();
+const port = process.env.PORT
 
 // Configura el motor de plantillas que se utilizará para renderizar las vistas. En este caso, está configurando Handlebars (hbs) como el motor de plantillas predeterminado.
 app.set('view engine', 'hbs');
@@ -41,6 +42,6 @@ app.get('/elements', (req, res) => {
 // });
 
 
-app.listen(8080);
-
-console.log('Aplicacion levantada en el puerto: ' + 8080);
+app.listen(port, () => {
+    console.log('Aplicacion levantada en el puerto: ' + port);
+});
