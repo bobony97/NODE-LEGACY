@@ -1,3 +1,4 @@
 documentacion.txt
 02-bases-node/node_modules
 03-webserver/node_modules
+03-webserver/.env
