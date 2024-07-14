@@ -1,4 +1,5 @@
 require('dotenv').config();
+const cors = require('cors');
 const express = require('express');
 
 class Server {
@@ -17,6 +18,7 @@ class Server {
         //se utiliza para montar funciones de middleware en una aplicación Express
         this.app.use(express.static('public')); //se utiliza para servir archivos estáticos, como imágenes, CSS, JavaScript y otros recursos, desde un directorio específico. 
                                                 //En este caso, el directorio es public.
+        this.app.use(cors());
         
     }
 
