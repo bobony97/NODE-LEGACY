@@ -15,42 +15,19 @@ class Server {
     };
 
     middlewares() {
+        //CORS: Es una política de seguridad que permite a los servidores especificar qué orígenes pueden acceder a sus recursos.
+        this.app.use(cors());
+
         //se utiliza para montar funciones de middleware en una aplicación Express
         this.app.use(express.static('public')); //se utiliza para servir archivos estáticos, como imágenes, CSS, JavaScript y otros recursos, desde un directorio específico. 
                                                 //En este caso, el directorio es public.
-        this.app.use(cors());
         
     }
 
     routes() {
-        // this.app.get('/api', (req, res) => {
-        //     res.send('Hello World');
-        // });
-
-        this.app.get('/api', (req, res) => {
-            res.json({
-                msg: 'get API'
-            });
-        });
-
-        this.app.put('/api', (req, res) => {
-            res.json({
-                msg: 'put API'
-            });
-        });
-
-        this.app.post('/api', (req, res) => {
-            res.json({
-                msg: 'post API'
-            });
-        });
-
-        this.app.delete('/api', (req, res) => {
-            res.json({
-                msg: 'delete API'
-            });
-        });
-
+        //Monta el enrutador importado de ../routes/user en la ruta /api/user.
+        //Esto va hacer que cualquier peticion relacionada con usuarios, deba pasar por la ruta .../api/user
+        this.app.use('/api/user', require('../routes/user'));
     };
 
     listen() {
