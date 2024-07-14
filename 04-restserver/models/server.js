@@ -18,6 +18,9 @@ class Server {
         //CORS: Es una política de seguridad que permite a los servidores especificar qué orígenes pueden acceder a sus recursos.
         this.app.use(cors());
 
+        //Lectura y parseo del body
+        this.app.use(express.json());
+
         //se utiliza para montar funciones de middleware en una aplicación Express
         this.app.use(express.static('public')); //se utiliza para servir archivos estáticos, como imágenes, CSS, JavaScript y otros recursos, desde un directorio específico. 
                                                 //En este caso, el directorio es public.
