@@ -9,7 +9,7 @@ class Server {
         this.port = process.env.PORT;
 
         //CONEXIÓN A LA BASE DE DATOS
-        this.conectDb();
+        this.connectDb();
 
         //MIDDLEWARE
         this.middlewares();
@@ -18,7 +18,7 @@ class Server {
         this.routes();
     };
 
-    async conectDb() {
+    async connectDb() {
         await dbConnection();
     };
 
