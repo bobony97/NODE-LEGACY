@@ -1,4 +1,5 @@
 const { response, request } = require('express');
+const bcrypt = require('bcryptjs');
 
 const User = require('../models/usuario');
 
@@ -21,19 +22,33 @@ const putUsers = (req, res = response) => {
 };
 
 const postUsers = async(req, res) => {
-    //Obtenemos la informacion que el usuario mande en el body en la peticion post
-    const body = req.body;
+    try {
+        //Obtenemos la informacion que el usuario mande en el body en la peticion post
+        const { name, password, email, role } = req.body;
 
-    //Seteamos toda la informacion enviada por el usuario a la instancia del modelo para la base de datos
-    const user = new User(body);
+        //Seteamos toda la informacion enviada por el usuario a la instancia del modelo para la base de datos
+        const user = new User({ name, password, email, role });
+
+        //Verificar si el correo existe
+
+        //Encriptar la contraseña
+        //Esto permite añadir una cadena de caracteres aleatorias antes de hashear en este caso la contraseña, esta funcion espera un parametro, este es para calcular el numero de vueltas
+        //que debe dar para aplicar el hashing, esto mejora la seguridad pero tambien aumenta el tiempo necesario para generar el hash. Por defecto es 10
+        const salt = bcrypt.genSaltSync(10);
+
+        user.password = bcrypt.hashSync(password, salt);
     
-    //Seteamos la informacion a la db
-    await user.save();
+        //Seteamos la informacion a la db
+        await user.save();
 
-    res.json({
-        msg: 'post API - controlador',
-        user
-    });
+        res.json({
+            msg: 'post API - controlador',
+            user
+        });
+    } catch (error) {
+        console.log(error);
+    }
+
 };
 
 const deleteUsers = (req, res) => {
