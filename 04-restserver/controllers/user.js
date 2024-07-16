@@ -1,5 +1,6 @@
 const { response, request } = require('express');
 const bcrypt = require('bcryptjs');
+const { validationResult } = require('express-validator');
 
 const User = require('../models/usuario');
 
@@ -21,7 +22,13 @@ const putUsers = (req, res = response) => {
     });
 };
 
-const postUsers = async(req, res) => {
+const postUsers = async(req, res = response) => {
+    //Validando errores
+    const errors = validationResult(req);
+    if(!errors.isEmpty()) {
+        res.status(400).json(errors);
+    };
+
     try {
         //Obtenemos la informacion que el usuario mande en el body en la peticion post
         const { name, password, email, role } = req.body;
@@ -30,6 +37,12 @@ const postUsers = async(req, res) => {
         const user = new User({ name, password, email, role });
 
         //Verificar si el correo existe
+        const existEmail = await User.findOne({email});
+        if(existEmail) {
+            return res.status(400).json({
+                msg: 'El correo ya esta registrado'
+            });
+        }
 
         //Encriptar la contraseña
         //Esto permite añadir una cadena de caracteres aleatorias antes de hashear en este caso la contraseña, esta funcion espera un parametro, este es para calcular el numero de vueltas
