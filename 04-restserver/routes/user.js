@@ -2,6 +2,7 @@ const { Router } = require('express');
 const { check } = require('express-validator');
 const { getUsers, putUsers, postUsers, deleteUsers } = require('../controllers/user');
 const { validateField } = require('../middlewars/validationFields');
+const Rol = require('../models/rol');
 const router = Router();
 
 // this.app.get('/api', (req, res) => {
@@ -16,7 +17,13 @@ router.post('/', [
     check('name', 'El nombre es obligatorio').not().isEmpty(),
     check('password', 'El password es obligatorio y debe tener mas de 6 letras').isLength({ min: 6 }),
     check('email', 'No es un email valido').isEmail(),
-    check('role', 'No es un rol permitido').isIn(['ADMIN_ROLE', 'USER_ROLE']),
+    // check('role', 'No es un rol permitido').isIn(['ADMIN_ROLE', 'USER_ROLE']),
+    check('rol').custom( async(rol = '') => {
+        const existRol = await Rol.findOne({rol});
+        if(!existRol) {
+            throw new Error(`El rol ${rol}, no esta registrado en la base de datos`);
+        };
+    }),
     validateField
 ] ,postUsers);
 

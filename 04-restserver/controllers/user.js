@@ -25,10 +25,10 @@ const putUsers = (req, res = response) => {
 const postUsers = async(req, res = response) => {
     try {
         //Obtenemos la informacion que el usuario mande en el body en la peticion post
-        const { name, password, email, role } = req.body;
+        const { name, password, email, rol } = req.body;
 
         //Seteamos toda la informacion enviada por el usuario a la instancia del modelo para la base de datos
-        const user = new User({ name, password, email, role });
+        const user = new User({ name, password, email, rol });
 
         //Verificar si el correo existe
         const existEmail = await User.findOne({email});
@@ -55,7 +55,6 @@ const postUsers = async(req, res = response) => {
     } catch (error) {
         console.log(error);
     }
-
 };
 
 const deleteUsers = (req, res) => {
