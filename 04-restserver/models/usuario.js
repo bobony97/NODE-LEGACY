@@ -32,4 +32,10 @@ const userSchema = Schema({
     }
 });
 
+//Reesbribir metodos: Con este metodo se va a retirar propiedades de la respuesta enviada al cliente
+userSchema.methods.toJSON = function() {
+    const { __v, password, ... user } = this.toObject();
+    return user;
+};
+
 module.exports = model( 'User', userSchema );
