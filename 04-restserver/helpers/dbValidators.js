@@ -1,4 +1,5 @@
 const Rol = require('../models/rol');
+const User = require('../models/usuario');
 
 //Esta validacion va a verificar si el rol ingresado es compatible con los que hay cargados en la db
 const isValidRol = async(rol = '') => {
@@ -8,7 +9,14 @@ const isValidRol = async(rol = '') => {
     };
 }
 
+//Verificar si el correo existe
+const existEmail = async(email = '') => {
+    const isExistEmail = await User.findOne({email});
+    if(isExistEmail) throw new Error(`El email: ${email} ingresado ya esta registrado`);
+}
+
 
 module.exports = {
-    isValidRol
+    isValidRol,
+    existEmail
 }
