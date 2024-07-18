@@ -3,12 +3,19 @@ const User = require('../models/usuario');
 const bcrypt = require('bcryptjs');
 
 
-const getUsers = (req = request, res = response) => {
+const getUsers = async(req = request, res = response) => {
     //Obtenemos toda la informacion enviada por la ruta 
-    const params = req.query;
+    // const params = req.query;
+
+    const { limit = 5, from = 0} = req.query;
+
+    //Obtenemos todos los usuarios de la base de datos, con paginacion
+    const users = await User.find() 
+        .skip( Number(from) )   //Permite implementar desde que valor queremos obtener 
+        .limit(Number(limit));  //Permite implementar hasta que valor queremos obtener 
+
     res.json({
-        msg: 'get API - controlador',
-        params
+        users
     });
 };
 
@@ -26,7 +33,6 @@ const putUsers = async(req, res = response) => {
     const userDb = await User.findByIdAndUpdate(id, rest, {new: true});
 
     res.json({
-        msg: 'put API - controlador',
         userDb
     });
 };
