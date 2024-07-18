@@ -12,12 +12,22 @@ const getUsers = (req = request, res = response) => {
     });
 };
 
-const putUsers = (req, res = response) => {
+const putUsers = async(req, res = response) => {
     //Obtenemos la informacion que el usuario mande en la ruta en la peticion put
-    const id = req.params.id
+    const { id } = req.params
+    const { password, google, ...rest } = req.body;
+
+    if(password) {
+        const salt = bcrypt.genSaltSync(10);
+        rest.password = bcrypt.hashSync(password, salt);
+    }
+
+    //Este metodo permite buscar informacion en la base de datos por ir y actualizarla
+    const userDb = await User.findByIdAndUpdate(id, rest, {new: true});
+
     res.json({
         msg: 'put API - controlador',
-        id
+        userDb
     });
 };
 
@@ -33,7 +43,6 @@ const postUsers = async(req, res = response) => {
         //Esto permite añadir una cadena de caracteres aleatorias antes de hashear en este caso la contraseña, esta funcion espera un parametro, este es para calcular el numero de vueltas
         //que debe dar para aplicar el hashing, esto mejora la seguridad pero tambien aumenta el tiempo necesario para generar el hash. Por defecto es 10
         const salt = bcrypt.genSaltSync(10);
-
         user.password = bcrypt.hashSync(password, salt);
     
         //Seteamos la informacion a la db
