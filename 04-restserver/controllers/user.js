@@ -15,7 +15,7 @@ const getUsers = (req = request, res = response) => {
 const putUsers = async(req, res = response) => {
     //Obtenemos la informacion que el usuario mande en la ruta en la peticion put
     const { id } = req.params
-    const { password, google, ...rest } = req.body;
+    const { _id, password, google, ...rest } = req.body;
 
     if(password) {
         const salt = bcrypt.genSaltSync(10);
