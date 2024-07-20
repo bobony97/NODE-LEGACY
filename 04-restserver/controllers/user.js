@@ -10,11 +10,23 @@ const getUsers = async(req = request, res = response) => {
     const { limit = 5, from = 0} = req.query;
 
     //Obtenemos todos los usuarios de la base de datos, con paginacion
-    const users = await User.find() 
-        .skip( Number(from) )   //Permite implementar desde que valor queremos obtener 
-        .limit(Number(limit));  //Permite implementar hasta que valor queremos obtener 
+    // const users = await User.find({ state: true })  //Este objeto que enviamos determina que solo vamos a querer que traiga los registros de los usuarios activos
+        // .skip( Number(from) )   //Permite implementar desde que valor queremos obtener 
+        // .limit(Number(limit));  //Permite implementar hasta que valor queremos obtener 
+
+    //Esto permite obtener la cantidad de registros en la DB
+    // const total = await User.countDocuments({ state: true });
+
+    //Esto permite disparar varias promesas
+    const [ total, users ] = await Promise.all([
+        User.countDocuments({ state: true }),
+        User.find({ state: true })
+            .skip( Number(from) )
+            .limit(Number(limit))
+    ])
 
     res.json({
+        total,
         users
     });
 };
