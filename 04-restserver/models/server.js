@@ -39,6 +39,7 @@ class Server {
         //Monta el enrutador importado de ../routes/user en la ruta /api/user.
         //Esto va hacer que cualquier peticion relacionada con usuarios, deba pasar por la ruta .../api/user
         this.app.use('/api/user', require('../routes/user'));
+        this.app.use('/api/auth', require('../routes/auth'));
     };
 
     listen() {
