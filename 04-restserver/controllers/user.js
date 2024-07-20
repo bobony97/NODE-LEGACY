@@ -75,9 +75,17 @@ const postUsers = async(req, res = response) => {
     }
 };
 
-const deleteUsers = (req, res) => {
+const deleteUser = async(req, res) => {
+    const { id } = req.params;
+
+    //De esta forma se borra de la db
+    // const userDeleted = await User.findByIdAndDelete(id);
+
+    //Forma correcta con un boolean
+    const userDeleted = await User.findByIdAndUpdate(id, { state: false}, { new: true });
+
     res.json({
-        msg: 'delete API - controlador'
+        userDeleted
     });
 };
 
@@ -85,5 +93,5 @@ module.exports = {
     getUsers,
     putUsers,
     postUsers,
-    deleteUsers
+    deleteUser
 }
