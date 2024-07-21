@@ -4,4 +4,4 @@ mongoose.txt
 03-webserver/node_modules
 03-webserver/.env
 04-restserver/node_modules
-03-restserver/.env
+04-restserver/.env
