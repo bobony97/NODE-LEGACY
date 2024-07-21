@@ -4,10 +4,9 @@ const User = require('../models/usuario');
 const { generateJWT } = require('../helpers/generateJWT');
 
 const login = async(req, res = response) => {
-
     try {
         const { email, password } = req.body;
-        
+
         //Verifica si el usuario existe
         const user = await User.findOne({email});
         if(!user) {
