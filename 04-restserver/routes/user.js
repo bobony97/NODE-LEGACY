@@ -4,6 +4,7 @@ const { getUsers, putUsers, postUsers, deleteUser } = require('../controllers/us
 const { validateField } = require('../middlewars/validationFields');
 const { isValidRol, existEmail, existUserId } = require('../helpers/dbValidators');
 const { validateJWT } = require('../middlewars/validate-jwt');
+const { isAdminRol } = require('../middlewars/validate-rol');
 const router = Router();
 
 // this.app.get('/api', (req, res) => {
@@ -34,6 +35,7 @@ router.post('/', [
 
 router.delete('/:id', [
     validateJWT,
+    isAdminRol,
     check('id', 'No es un ID valido').isMongoId(),
     check('id').custom( existUserId ),
     validateField
