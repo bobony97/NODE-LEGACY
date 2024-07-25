@@ -1,9 +1,12 @@
-const { Schema, model } = require('mongoose');
+const mongoose = require('mongoose');
+const { Schema, model } = mongoose;
+// const { Schema, model } = require('mongoose');
 
 const categoriesSchema = Schema({
     name: {
         type: String,
-        required: true
+        required: true,
+        unique: true
     },
     state: {
         type: Boolean,
