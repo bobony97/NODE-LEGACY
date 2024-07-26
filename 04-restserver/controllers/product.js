@@ -50,7 +50,8 @@ const getAllProducts = async(req, res = response) => {
 const getProductById = async(req, res = response) => {
     const { id } = req.params;
 
-    const product = Product.findById({_id: id, state: true});
+    const product = Product.findById({_id: id, state: true})
+                            .populate('category', 'name');
 
     if(!product.state) {
         return res.status(400).json({
@@ -65,6 +66,32 @@ const getProductById = async(req, res = response) => {
 
 const editProductById = async(req, res = response) => {
     const { id } = req.params;
-    const {  } = req.body;
+    const { state, user, category, ...newData } = req.body;
 
+    newData.name = newData.name.toUpperCase();
+    newData.user = req.user._id;
+
+    const findAndEditCategory = await Product.findByIdAndUpdate(id, newData, {new: true});
+
+    res.status(201).json({
+        findAndEditCategory
+    });
 };
+
+const deleteProduct = async(req, res = response) => {
+    const { id } = req.params;
+
+    const deleteProduct = await Product.findByIdAndUpdate(id);
+
+    res.status(200).json({
+        deleteProduct
+    });
+};
+
+module.exports = {
+    createProduct,
+    getAllProducts,
+    getProductById,
+    editProductById,
+    deleteProduct,
+}
