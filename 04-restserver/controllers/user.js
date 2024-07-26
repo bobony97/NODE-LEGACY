@@ -21,9 +21,10 @@ const getUsers = async(req = request, res = response) => {
     const [ total, users ] = await Promise.all([
         User.countDocuments({ state: true }),
         User.find({ state: true })
-            .skip( Number(from) )
+            //Es necesario castear la informacion obtenida de la query
+            .skip(Number(from))
             .limit(Number(limit))
-    ])
+    ]);
 
     res.json({
         total,
@@ -41,7 +42,7 @@ const putUsers = async(req, res = response) => {
         rest.password = bcrypt.hashSync(password, salt);
     }
 
-    //Este metodo permite buscar informacion en la base de datos por ir y actualizarla
+    //Este metodo permite buscar informacion en la base de datos por id y actualizarla
     const userDb = await User.findByIdAndUpdate(id, rest, {new: true});
 
     res.json({
@@ -67,7 +68,6 @@ const postUsers = async(req, res = response) => {
         await user.save();
 
         res.json({
-            msg: 'post API - controlador',
             user
         });
     } catch (error) {

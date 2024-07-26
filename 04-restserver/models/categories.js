@@ -1,6 +1,4 @@
-const mongoose = require('mongoose');
-const { Schema, model } = mongoose;
-// const { Schema, model } = require('mongoose');
+const { Schema, model } = require('mongoose');
 
 const categoriesSchema = Schema({
     name: {
@@ -21,6 +19,12 @@ const categoriesSchema = Schema({
         required: true
     }
 });
+
+categoriesSchema.methods.toJSON = function() {
+    const { __v, state, _id, ... category } = this.toObject();
+    category.uid = _id;
+    return category;
+};
 
 
 module.exports = model('Category', categoriesSchema);
