@@ -5,7 +5,7 @@ const validateField = ( req, res, next ) => {
     //Validando errores
     const errors = validationResult(req);
     if(!errors.isEmpty()) {
-        res.status(400).json(errors);
+        return res.status(400).json({errors: errors.array()});
     };
 
     //Esto indica que siga con el siguiente middleware, caso contrario continua con el controlador

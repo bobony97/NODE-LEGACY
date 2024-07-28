@@ -2,10 +2,9 @@ const { response } = require('express');
 const Product = require('../models/product');
 
 const createProduct = async(req, res = response) => {
-    const { name, price, category, description } = req.body;
-    name.toUpperCase();
+    const { state, user, ...body } = req.body;
 
-    const dbProduct = await Category.findOne({ name });
+    const dbProduct = await Category.findOne({ name: body.name });
 
     if(dbProduct) {
         return res.status(400).json({
@@ -15,10 +14,7 @@ const createProduct = async(req, res = response) => {
 
     //Generar la data a guardar
     const data = {
-        name,
-        price,
-        description,
-        category: req.Category._id,
+        name: req.body.name.toUpperCase(),
         user: req.user._id
     };
 
@@ -36,9 +32,9 @@ const getAllProducts = async(req, res = response) => {
     const [total, products] = await Promise.all([
         Product.countDocuments({ state: true }),
         Product.find({ state: true })
-                .limit(Number(limit))
                 .populate('user', 'name')
                 .populate('category', 'name')
+                .limit(Number(limit))
     ]);
 
     res.status(200).json({
@@ -51,7 +47,8 @@ const getProductById = async(req, res = response) => {
     const { id } = req.params;
 
     const product = Product.findById({_id: id, state: true})
-                            .populate('category', 'name');
+                            .populate('category', 'name')
+                            .populate('user', 'name')
 
     if(!product.state) {
         return res.status(400).json({
@@ -66,10 +63,10 @@ const getProductById = async(req, res = response) => {
 
 const editProductById = async(req, res = response) => {
     const { id } = req.params;
-    const { state, user, category, ...newData } = req.body;
+    const { state, user, ...data } = req.body;
 
-    newData.name = newData.name.toUpperCase();
-    newData.user = req.user._id;
+    data.name = data.name.toUpperCase();
+    data.user = req.user._id;
 
     const findAndEditCategory = await Product.findByIdAndUpdate(id, newData, {new: true});
 

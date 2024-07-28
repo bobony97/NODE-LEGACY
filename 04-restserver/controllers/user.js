@@ -1,6 +1,7 @@
 const { response, request } = require('express');
 const User = require('../models/usuario');
 const bcrypt = require('bcryptjs');
+const e = require('express');
 
 
 const getUsers = async(req = request, res = response) => {
@@ -35,18 +36,36 @@ const getUsers = async(req = request, res = response) => {
 const putUsers = async(req, res = response) => {
     //Obtenemos la informacion que el usuario mande en la ruta en la peticion put
     const { id } = req.params
-    const { _id, password, google, ...rest } = req.body;
+    const { _id, password, google, email, ...data } = req.body;
+
+    //Se busca el usuario por el id
+    const userDb = await User.findById(id);
+
+    //Se comprueba que el email ingresado por el usuario sea diferente al que ya posee, si lo es, va a buscar ese email entre todos los usuarios
+    if(email !== userDb.email) {
+        const existEmail = await User.findOne({ email });
+
+        //Si el email existe lanza un error
+        if (existEmail) {
+            return res.status(400).json({
+                msg: `El email ${email} ya se encuentra en uso`
+            });
+        }
+
+        //Actualiza el email en la data si no esta en uso
+        data.email = email;
+    }
 
     if(password) {
         const salt = bcrypt.genSaltSync(10);
-        rest.password = bcrypt.hashSync(password, salt);
+        data.password = bcrypt.hashSync(password, salt);
     }
-
+    
     //Este metodo permite buscar informacion en la base de datos por id y actualizarla
-    const userDb = await User.findByIdAndUpdate(id, rest, {new: true});
+    const userUpdate = await User.findByIdAndUpdate(id, data, {new: true}); 
 
     res.json({
-        userDb
+        userUpdate
     });
 };
 

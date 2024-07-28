@@ -19,6 +19,7 @@ router.put('/:id', [
     check('id').custom( existUserId ),
     check('name', 'El nombre es obligatorio').not().isEmpty(),
     check('password', 'El password es obligatorio y debe tener mas de 6 letras').isLength({ min: 6 }),
+    check('email', "El email ingresado no es valido").isEmail(),
     validateField,
 ], putUsers);
 

@@ -12,7 +12,7 @@ const ProductSchema = mongoose.Schema({
         required: true
     },
     user: {
-        type: Schema.Types.ObjectId,
+        type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
         required: true
     },
@@ -21,7 +21,7 @@ const ProductSchema = mongoose.Schema({
         default: 0
     },
     category: {
-        type: Schema.Types.ObjectId,
+        type: mongoose.Schema.Types.ObjectId,
         ref: 'category',
         required: true
     },

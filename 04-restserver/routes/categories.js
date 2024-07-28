@@ -4,7 +4,7 @@ const { check } = require('express-validator');
 const { validateField } = require('../middlewars/validationFields');
 const { validateJWT } = require('../middlewars/validate-jwt');
 const { createCategory, getAllCategories, getCategoryById, editCategoryById, deleteCategory } = require('../controllers/categories');
-const { existCategoryId, isValidRol } = require('../helpers/dbValidators');
+const { existCategoryId } = require('../helpers/dbValidators');
 const { isAdminRol } = require('../middlewars/validate-rol');
 
 const router = Router();
@@ -45,7 +45,10 @@ router.delete('/:id', [
     check('id', 'No es un id de mongo valido').isMongoId(),
     check('id').custom(existCategoryId),
     validateField
-], deleteCategory);
+], deleteCategory)
+
+
+
 
 
 module.exports = router;

@@ -80,13 +80,18 @@ const editCategoryById = async(req, res = response) => {
 const deleteCategory = async(req, res = response) => {
     const { id } = req.params;
 
-    const category = await Category.findByIdAndUpdate(id, {state: false}, {new: true});
+    const category = await Category.findByIdAndUpdate(id, { state: false }, { new: true });
+
+    if (!category) {
+        return res.status(404).json({
+            msg: 'Categoría no encontrada'
+        });
+    }
 
     res.status(200).json({
         category
     });
-}
-
+};
 
 
 module.exports = {
