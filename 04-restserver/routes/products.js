@@ -26,9 +26,10 @@ router.get('/:id', [
 
 router.put('/:id', [
     validateJWT,
-    isAdminRol,
+    check('name', 'El nombre es obligatorio').not().isEmpty(),
     check('id', 'No es un id de mongo valido').isMongoId(),
     check('id').custom(existProductById),
+    check('category','Debe ingresar una categoría valida').isMongoId(),
     validateField
 ], editProductById);
 

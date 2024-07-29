@@ -22,7 +22,7 @@ const ProductSchema = mongoose.Schema({
     },
     category: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'category',
+        ref: 'Category',
         required: true
     },
     description: {
@@ -34,8 +34,9 @@ const ProductSchema = mongoose.Schema({
     }
 });
 
-ProductSchema.methods.toJson = function() {
-    const { __v, state, ...product } = this.toObject();
+ProductSchema.methods.toJSON = function() {
+    const { __v, state, _id, available, ...product } = this.toObject();
+    product.uid = _id;
     return product;
 };
 
