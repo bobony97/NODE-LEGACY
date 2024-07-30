@@ -25,11 +25,11 @@ const searchUsers = async(terminus = '', res = response) => {
     };
 
     //Se utiliza esta expresion regular para indicar que la busqueda va a ser insensible a las mayusculas y minusculas
-    const regEx = new RegExp(terminus, 'i');
+    const regex = new RegExp(terminus, 'i');
 
     //Indicamos que la expresion regular tiene que hacer match con el nombre o con el correo
     const users = await User.find({ 
-        $or: [ {name: regEx}, { email: regEx }],
+        $or: [ {name: regex}, { email: regex }],
         $and: [{ state: true }]
     });
 
@@ -37,6 +37,47 @@ const searchUsers = async(terminus = '', res = response) => {
         results: users
     });
 };
+
+const searchCategory = async(terminus = '', res = response) => {
+    const isMongoId = ObjectId.isValid(terminus);
+
+    if(isMongoId) {
+        const category = await Category.findById(terminus);
+        return res.status(200).json({
+            results: (category) ? [ category ] : []
+        });
+    };
+
+    const regex = new RegExp(terminus, 'i');
+
+    const categories = await Category.find({ state: regex, state: true});
+
+    res.status(200).json({
+        results: categories
+    });
+};
+
+const searchProduct = async(terminus = '', res = response) => {
+    const isMongoId = ObjectId.isValid(terminus);
+
+    if(isMongoId) {
+        const product = await Product.findById(terminus)
+                                    .populate('category', 'name');
+        return res.status(200).json({
+            results: (product) ? [ product ] : []
+        });
+    };
+
+    const regex = new RegExp(terminus, 'i');
+
+    const products = await Product.find({ state: regex, state: true})
+                                    .populate('category', 'name');
+
+    res.status(200).json({
+        results: products
+    });
+};
+
 
 const search = async(req, res = response) => {
 
@@ -53,14 +94,12 @@ const search = async(req, res = response) => {
             searchUsers(terminus, res)
         break;
 
-        case 'category': {
-
-        }
+        case 'category': 
+            searchCategory(terminus, res)
         break;
 
-        case 'product': {
-
-        }
+        case 'product': 
+            searchProduct(terminus, res)
         break;
 
         default: 

@@ -40,7 +40,7 @@ class Server {
         //Esto va hacer que cualquier peticion relacionada con usuarios, deba pasar por la ruta .../api/user
         this.app.use('/api/user', require('../routes/user'));
         this.app.use('/api/auth', require('../routes/auth'));
-        this.app.use('/api/categories', require('../routes/categories'));
+        this.app.use('/api/category', require('../routes/categories'));
         this.app.use('/api/product', require('../routes/products'));
         this.app.use('/api/search', require('../routes/search'));
     };
