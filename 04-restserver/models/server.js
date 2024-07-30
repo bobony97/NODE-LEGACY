@@ -43,6 +43,7 @@ class Server {
         this.app.use('/api/category', require('../routes/categories'));
         this.app.use('/api/product', require('../routes/products'));
         this.app.use('/api/search', require('../routes/search'));
+        this.app.use('/api/upload', require('../routes/search'));
     };
 
     listen() {
