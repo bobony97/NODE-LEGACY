@@ -14,18 +14,36 @@ const uploadFile = async(req, res = response) => {
     }
   
     const { archive } = req.files;
-  
-    const uploadPath = path.join( __dirname, '../uploads/', archive.name);
-  
-    archive.mv(uploadPath, (err) => {
-      if (err) {
-        return res.status(500).json({
-            err
+
+    //Esto va a cortar el nombre del archivo para obtener la extension del mismo
+    const shortName = archive.name.split('.');
+
+    //Esto va a extraer la extension del archivo, de "shortName"
+    const extension = shortName[shortName.length - 1 ];
+
+    //Validar extension
+    const validExtension = ['png', 'jpg', 'jpeg', 'gif'];
+
+    if(!validExtension.includes(extension)) {
+        return res.status(400).json({
+            msg: `La extension ${ extension }, no es valida`
         });
-      }
+    };
+
+    res.json({ extension });
   
-      res.json({ msg: 'File uploaded to ' + uploadPath});
-    });
+    // const uploadPath = path.join( __dirname, '../uploads/', archive.name);
+    
+    // //mv es el método que mueve el archivo al uploadPath, que es la ruta de destino en tu sistema de archivos.
+    // archive.mv(uploadPath, (err) => {
+    //   if (err) {
+    //     return res.status(500).json({
+    //         err
+    //     });
+    //   }
+  
+    //   res.json({ msg: 'File uploaded to ' + uploadPath});
+    // });
 };
 
 
