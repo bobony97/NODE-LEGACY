@@ -1,6 +1,7 @@
 require('dotenv').config();
 const cors = require('cors');
 const express = require('express');
+const fileUpload = require('express-fileupload');
 const { dbConnection } = require('../database/config');
 
 class Server {
@@ -32,6 +33,12 @@ class Server {
         //se utiliza para montar funciones de middleware en una aplicación Express
         this.app.use(express.static('public')); //se utiliza para servir archivos estáticos, como imágenes, CSS, JavaScript y otros recursos, desde un directorio específico. 
                                                 //En este caso, el directorio es public.
+
+        //Maneja la carga de archivos
+        this.app.use(fileUpload({
+            useTempFiles : true,
+            tempFileDir : '/tmp/'
+        }));
         
     }
 
@@ -43,7 +50,7 @@ class Server {
         this.app.use('/api/category', require('../routes/categories'));
         this.app.use('/api/product', require('../routes/products'));
         this.app.use('/api/search', require('../routes/search'));
-        this.app.use('/api/upload', require('../routes/search'));
+        this.app.use('/api/upload', require('../routes/uploads'));
     };
 
     listen() {
