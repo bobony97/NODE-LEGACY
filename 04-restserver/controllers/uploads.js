@@ -1,5 +1,6 @@
 const { response } = require("express");
 const path = require('path');
+const { v4: uuidv4 } = require('uuid');
 
 const uploadFile = async(req, res = response) => {
     if (!req.files || Object.keys(req.files).length === 0) {
@@ -30,20 +31,19 @@ const uploadFile = async(req, res = response) => {
         });
     };
 
-    res.json({ extension });
-  
-    // const uploadPath = path.join( __dirname, '../uploads/', archive.name);
+    const temporalName = uuidv4() + '.' + extension;
+    const uploadPath = path.join( __dirname, '../uploads/', temporalName.name);
     
-    // //mv es el método que mueve el archivo al uploadPath, que es la ruta de destino en tu sistema de archivos.
-    // archive.mv(uploadPath, (err) => {
-    //   if (err) {
-    //     return res.status(500).json({
-    //         err
-    //     });
-    //   }
+    //mv es el método que mueve el archivo al uploadPath, que es la ruta de destino en tu sistema de archivos.
+    archive.mv(uploadPath, (err) => {
+      if (err) {
+        return res.status(500).json({
+            err
+        });
+      }
   
-    //   res.json({ msg: 'File uploaded to ' + uploadPath});
-    // });
+      res.json({ msg: 'File uploaded to ' + uploadPath});
+    });
 };
 
 
