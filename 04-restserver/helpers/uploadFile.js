@@ -12,7 +12,7 @@ const validUploadFile = ( files, validExtensions = ['png', 'jpg', 'jpeg', 'gif']
         const extension = shortName[shortName.length - 1].toLowerCase();
 
         if (!validExtensions.includes(extension)) {
-            return reject(`La extension ${extension}, no es valida`);
+            return reject(`La extension ${extension}, no esta permitida`);
         };
 
         const temporalName = uuidv4() + '.' + extension;

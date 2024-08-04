@@ -5,3 +5,4 @@ mongoose.txt
 03-webserver/.env
 04-restserver/node_modules
 04-restserver/.env
+04-restserver/uploads
