@@ -7,11 +7,15 @@ const uploadFile = async(req, res = response) => {
       return res.status(400).json({msg: 'No hay archivos que subir'});
     };
 
-    const completedPath = await validUploadFile(req.files);
+    try {
+      const completedPath = await validUploadFile(req.files);
+      res.status(200).json({completedPath});
+    } catch(err) {
+      res.status(400).json({
+        err
+      });
+    }
 
-    res.status(200).json({
-      completedPath
-    });
 };
 
 

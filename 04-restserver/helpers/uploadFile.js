@@ -3,14 +3,13 @@ const { v4: uuidv4 } = require('uuid');
 
 const validUploadFile = ( files, validExtensions = ['png', 'jpg', 'jpeg', 'gif'], folder = '') => {
     return new Promise((resolve, reject) => {
-        console.log(files)
         const { archive } = files;
 
         //Esto va a cortar el nombre del archivo para obtener la extension del mismo
         const shortName = archive.name.split('.');
 
         //Esto va a extraer la extension del archivo, de "shortName"
-        const extension = shortName[shortName.length - 1];
+        const extension = shortName[shortName.length - 1].toLowerCase();
 
         if (!validExtensions.includes(extension)) {
             return reject(`La extension ${extension}, no es valida`);
