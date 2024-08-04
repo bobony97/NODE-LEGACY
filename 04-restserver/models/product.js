@@ -31,6 +31,9 @@ const ProductSchema = mongoose.Schema({
     available: {
         type: Boolean,
         default: true
+    },
+    img: {
+        type: String
     }
 });
 
