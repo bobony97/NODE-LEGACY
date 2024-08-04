@@ -5,10 +5,6 @@ const Product = require('../models/product');
 
 
 const uploadFile = async(req, res = response) => {
-    if (!req.files || Object.keys(req.files).length === 0 || !req.files.archive) {
-      return res.status(400).json({msg: 'No hay archivos que subir'});
-    };
-
     try {
       // const completedPath = await validUploadFile(req.files, ['txt', 'md'], 'textos');
       const completedPath = await validUploadFile(req.files, undefined, 'textos');
