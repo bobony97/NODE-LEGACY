@@ -32,11 +32,22 @@ const existProductById = async(id) => {
     if(!isProductExiste) throw new Error(`El ID: ${id}, no existe`);
 };
 
+const allowedCollections = async(collection = '', collections = []) => {
+    const included = collections.includes(collection);
+
+    if( !included ) {
+        throw new Error(`La colección ${collection}, no es valida, ${collections}`);
+    };
+
+    return true;
+};
+
 
 module.exports = {
     isValidRol,
     existEmail,
     existUserId,
     existCategoryId,
-    existProductById
+    existProductById,
+    allowedCollections
 }
