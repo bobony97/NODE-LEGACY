@@ -1,5 +1,8 @@
 const { response } = require("express");
 const { validUploadFile } = require("../helpers/uploadFile");
+const path = require('path');
+const fs = require('fs');
+
 const User = require('../models/usuario');
 const Product = require('../models/product');
 
@@ -42,7 +45,18 @@ const updateImage = async(req, res = response) => {
       });
   };
 
+
   try {
+    //Limpiar imagenes previas
+    if( model.img ) {
+      const imgPath = path.join( __dirname, '../uploads', collection, model.img );
+
+      //Pregunta si existe el archivo
+      if( fs.existsSync(imgPath) ) {
+        fs.unlinkSync(imgPath);
+      };
+    };
+
     const completedPath = await validUploadFile(req.files, undefined, collection);
     model.img = completedPath;
 
