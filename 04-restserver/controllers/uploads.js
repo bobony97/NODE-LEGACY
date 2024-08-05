@@ -41,7 +41,7 @@ const updateImage = async(req, res = response) => {
 
     default:
       res.status(500).json({
-        msg: 'Error'
+        msg: 'Error en la base de datos'
       });
   };
 
@@ -51,7 +51,7 @@ const updateImage = async(req, res = response) => {
     if( model.img ) {
       const imgPath = path.join( __dirname, '../uploads', collection, model.img );
 
-      //Pregunta si existe el archivo
+      //Pregunta si existe el archivo, caso contrario lo crea
       if( fs.existsSync(imgPath) ) {
         fs.unlinkSync(imgPath);
       };
@@ -69,8 +69,53 @@ const updateImage = async(req, res = response) => {
   }
 };
 
+const showImage = async(req, res = response) => {
+    const { id, collection } = req.params;
+
+    let model;
+
+    switch( collection ) {
+        case 'user':
+          model = await User.findById(id);
+          if(!model) {
+            return res.status(400).json({ msg: 'No existe un usuario con este id' });
+          };
+        break;
+
+        case 'product':
+          model = await Product.findById(id);
+          if(!model) {
+            return res.status(400).json({ msg: 'No existe un producto con este id' });
+          };
+      break;
+
+      default:
+        res.status(500).json({
+          msg: 'Error en la base de datos'
+        });
+    };
+
+
+    try {
+      if( model.img ) {
+        const imgPath = path.join( __dirname, '../uploads', collection, model.img );
+
+        if( fs.existsSync(imgPath) ) {
+          return res.sendFile(imgPath);
+        };
+      };
+
+      res.status(200).json({msg: 'falta place holder'});
+    } catch(err) {
+      res.status(400).json({
+        err
+      });
+    }
+};
+
 
 module.exports = {
     uploadFile,
-    updateImage
+    updateImage,
+    showImage
 };
