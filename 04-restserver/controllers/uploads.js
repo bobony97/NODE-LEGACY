@@ -105,7 +105,9 @@ const showImage = async(req, res = response) => {
         };
       };
 
-      res.status(200).json({msg: 'falta place holder'});
+      const noImage = path.join(__dirname, '../assets/no-image.jpg');
+
+      res.status(400).sendFile(noImage);
     } catch(err) {
       res.status(400).json({
         err
