@@ -45,8 +45,14 @@ class Server {
             });
 
             //Recibiendo informacion del cliente
-            socket.on('send-message', ( payload ) => {  //El "send-message", es la informacion que el cliente esta emitiendo
-                console.log('Mensaje recibido ', payload);
+            // socket.on('send-message', ( payload ) => {  //El "send-message", es la informacion que el cliente esta emitiendo
+            //     console.log('Mensaje recibido ', payload);
+            // });
+
+            //Esto va a emitir un mensaje a todos los usuarios conectados
+            socket.on('send-message', ( payload ) => {
+                //El "this.io" es cuando envia el socket el mensaje, por lo tanto no va a chocar con el "send-message" del cliente
+                this.io.emit('send-message', payload);
             });
         });
 
