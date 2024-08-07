@@ -43,7 +43,13 @@ class Server {
             socket.on('disconnect', () => {
                 console.log('Cliente Desconectado', socket.id);
             });
+
+            //Recibiendo informacion del cliente
+            socket.on('send-message', ( payload ) => {  //El "send-message", es la informacion que el cliente esta emitiendo
+                console.log('Mensaje recibido ', payload);
+            });
         });
+
     };
 
     listen() {
