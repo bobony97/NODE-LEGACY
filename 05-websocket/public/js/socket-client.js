@@ -24,6 +24,7 @@ socket.on('send-message', (payload) => {
     console.log(payload)
 });
 
+
 //Se va enviar la informacion del input al servidor
 btnSend.addEventListener('click', () => {
     const message = textMessage.value;
@@ -34,7 +35,9 @@ btnSend.addEventListener('click', () => {
         date: new Date().getTime()
     }
 
-    //Envía la información al servidor
-    socket.emit('send-message', payload);
+    //Envía la información al servidor y el id de quien la envia
+    socket.emit('send-message', payload, (id) => {
+        console.log('Desde el servidor', id);
+    });
 });
 

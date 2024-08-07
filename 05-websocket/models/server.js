@@ -50,9 +50,15 @@ class Server {
             // });
 
             //Esto va a emitir un mensaje a todos los usuarios conectados
-            socket.on('send-message', ( payload ) => {
+            // socket.on('send-message', ( payload ) => {
                 //El "this.io" es cuando envia el socket el mensaje, por lo tanto no va a chocar con el "send-message" del cliente
-                this.io.emit('send-message', payload);
+                // this.io.emit('send-message', payload);
+            // });
+
+            //Se envia la informacion por id de cliente
+            socket.on('send-message', ( payload, callback ) => {
+                const id = 123456;
+                callback(id);
             });
         });
 
