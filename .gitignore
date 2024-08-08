@@ -8,3 +8,5 @@ mongoose.txt
 04-restserver/uploads
 05-websocket/node_modules
 05-websocket/.env
+06-socket-colas/node_modules
+06-socket-colas/.env
